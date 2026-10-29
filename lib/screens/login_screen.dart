@@ -5,7 +5,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -21,13 +21,38 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
       // Si es exitoso, el AuthGate detectará el cambio y navegará automáticamente a HomePage
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al iniciar sesión: $e')),
-      );
+    } on FirebaseAuthException catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(_authErrorMessage(error))));
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
+  }
+
+  String _authErrorMessage(FirebaseAuthException error) {
+    return switch (error.code) {
+      'configuration-not-found' =>
+        'Firebase Authentication no está configurado. Activa Correo '
+            'electrónico/Contraseña en Firebase Console.',
+      'operation-not-allowed' =>
+        'El acceso con correo y contraseña está desactivado en Firebase.',
+      'invalid-credential' ||
+      'wrong-password' ||
+      'user-not-found' => 'El correo o la contraseña no son correctos.',
+      'network-request-failed' =>
+        'No se pudo conectar con Firebase. Comprueba tu conexión.',
+      _ => 'Error al iniciar sesión (${error.code}).',
+    };
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -57,15 +82,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 24),
-            _isLoading 
-              ? const CircularProgressIndicator()
-              : ElevatedButton(
-                  onPressed: _signIn,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _signIn,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: const Text('Entrar'),
                   ),
-                  child: const Text('Entrar'),
-                ),
           ],
         ),
       ),
