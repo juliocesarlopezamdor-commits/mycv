@@ -1,0 +1,50 @@
+{
+	"flutter": {
+		"platforms": {
+			"android": {
+				"default": {
+					"projectId": "mycv-julio-2026",
+					"appId": "1:824745680923:android:e11f442dca220047b718be",
+					"fileOutput": "android/app/google-services.json"
+				}
+			},
+			"dart": {
+				"lib/firebase_options.dart": {
+					"projectId": "mycv-julio-2026",
+					"configurations": {
+						"android": "1:824745680923:android:e11f442dca220047b718be",
+						"ios": "1:824745680923:ios:723f3e73d11e6f50b718be",
+						"macos": "1:824745680923:ios:723f3e73d11e6f50b718be",
+						"web": "1:824745680923:web:b3dfd8e4daac4e28b718be",
+						"windows": "1:824745680923:web:8fe0a3e2b73a9271b718be"
+					}
+				}
+			}
+		}
+	},
+	"firestore": {
+		"rules": "firestore.rules"
+	},
+	"storage": {
+		"rules": "storage.rules"
+	},
+	"emulators": {
+		"auth": {
+			"port": 9099
+		},
+		"firestore": {
+			"port": 8080
+		},
+		"storage": {
+			"port": 9199
+		},
+		"functions": {
+			"port": 5001
+		},
+		"ui": {
+			"enabled": true,
+			"port": 4000
+		},
+		"singleProjectMode": true
+	}
+}
