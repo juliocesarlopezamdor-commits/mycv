@@ -46,7 +46,7 @@ class GoogleAuthService {
         stackTrace,
         reason: 'Google sign-in failed',
       );
-      throw AuthException('Google sign-in failed: $e');
+      throw Exception('Google sign-in failed: $e');
     }
   }
 

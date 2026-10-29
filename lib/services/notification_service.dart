@@ -52,7 +52,7 @@ class NotificationService {
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings();
     await _localNotifications.initialize(
-      const InitializationSettings(
+      settings: const InitializationSettings(
         android: androidSettings,
         iOS: iosSettings,
       ),
@@ -63,10 +63,10 @@ class NotificationService {
     // Show a local notification since FCM doesn't display in foreground
     if (message.notification != null) {
       _localNotifications.show(
-        message.hashCode,
-        message.notification!.title,
-        message.notification!.body,
-        const NotificationDetails(
+        id: message.hashCode,
+        title: message.notification!.title,
+        body: message.notification!.body,
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'default_channel',
             'Default',
